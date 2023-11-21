@@ -140,6 +140,8 @@ namespace SAPeador
                     }
                 }
             }
+            autoIt.WinActivate(handleId);
+            await Task.Delay(100);
             while (autoIt.ControlSetText(handleId, "", "[ID:1148]", filePath) == 0 && !cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(100, cancellationToken);
@@ -154,8 +156,9 @@ namespace SAPeador
                 await Task.Delay(100, cancellationToken);
             }
             var hwndConfirm = autoIt.WinGetHandle("[CLASS:#32770]");
-            autoIt.WinActivate(hwndConfirm);
-            while (autoIt.ControlClick(hwndConfirm, "", "[CLASS:Button; INSTANCE:1]") == 0 && !cancellationToken.IsCancellationRequested)
+            autoIt.WinActivate($"[HANDLE:{hwndConfirm}]");
+            await Task.Delay(100);
+            while (autoIt.ControlClick($"[HANDLE:{hwndConfirm}]", "", "[CLASS:Button; INSTANCE:1]") == 0 && !cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(100, cancellationToken);
             }
