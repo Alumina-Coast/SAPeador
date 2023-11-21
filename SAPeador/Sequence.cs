@@ -16,15 +16,26 @@ namespace SAPeador
     /// </summary>
     public class Sequence
     {
+        /// <summary>
+        /// Name to be used as SAP User.
+        /// </summary>
         public string User { get; set; }
+        /// <summary>
+        /// Password for the SAP User.
+        /// Needed only when logging in without SSO.
+        /// </summary>
         public string Secret { internal get; set; }
+        /// <summary>
+        /// Id for the session the sequence is running on.
+        /// Provide one only if you know it is active and belongs to the User.
+        /// </summary>
         public string SessionId { get; set; }
         public bool KeepAlive { get; set; }
         public bool KeepAliveOnFailure { get; set; }
         public bool InterruptOnFailure { get; set; }
         public SequenceState State { get; internal set; } = SequenceState.QUEUED;
         /// <summary>
-        /// Actions in this list will be executed in order.
+        /// Gets or sets the list of actions to be executed in the sequence.
         /// </summary>
         public List<IExecutable> Actions { get; set; } = new List<IExecutable>();
 
