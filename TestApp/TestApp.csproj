@@ -108,6 +108,7 @@
     <None Include=".env">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include=".env" />
     <None Include=".env.example" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

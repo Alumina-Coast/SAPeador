@@ -18,7 +18,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
 using SAPeador;
-using dotenv;
 using dotenv.net;
 
 namespace TestApp
@@ -128,7 +127,6 @@ namespace TestApp
 			seq1.Actions.Add(op1a5);
 			oper.PlaySequence(seq1);
 			e.Result = op1a5;
-			GetChildrenExecutable
         }
 	}
 }
