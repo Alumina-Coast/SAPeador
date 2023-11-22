@@ -7,13 +7,22 @@ using AutoItX3Lib;
 
 namespace SAPeador
 {
-    public class SapOperator
+	/// <summary>
+	/// Manages the execution of sequences of actions within the SAP GUI Client.
+	/// This class is responsible for establishing SAP sessions and executing actions defined in the Sequence.
+	/// </summary>
+	public class SapOperator
 	{
 		private readonly string _sapConnectionString;
 		private readonly bool _useSso;
 		private static readonly object _lockObject = new object();
 
-        public SapOperator(string sapConnectionString, bool useSso = false)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SapOperator"/> class.
+		/// </summary>
+		/// <param name="sapConnectionString">The connection string to establish connection with the SAP Client.</param>
+		/// <param name="useSso">Specifies whether if Single Sign-On is expected for authentication. False by default.</param>
+		public SapOperator(string sapConnectionString, bool useSso = false)
 		{
 			_sapConnectionString = sapConnectionString;
 			_useSso = useSso;
@@ -40,9 +49,55 @@ namespace SAPeador
             }
             catch { }
             return false;
-        }
+		}
 
-        private GuiApplication GetEngine()
+		/// <summary>
+		/// Executes the actions from the sequence in the corresponding session and under the flags set in the sequence object.
+		/// </summary>
+		/// <param name="sequence">The sequence to be played on the SAP GUI Client.</param>
+		public void PlaySequence(Sequence sequence)
+		{
+			sequence.State = SequenceState.IN_PROCESS;
+			GuiSession session;
+			if (string.IsNullOrWhiteSpace(sequence.SessionId))
+			{
+				session = GetNewSession(sequence.User, sequence.Secret);
+			}
+			else
+			{
+				session = GetSession(sequence.User, sequence.SessionId);
+			}
+			if (session is null)
+			{
+				return;
+			}
+			sequence.SessionId = session.Id;
+			foreach (IExecutable action in sequence.Actions)
+			{
+				action.Execute(session);
+				if ((sequence.InterruptOnFailure || action.GetInterruptOnFailure()) && action.GetState() == InteractionState.FAILURE)
+				{
+					sequence.State = SequenceState.INTERRUPTED;
+					break;
+				}
+			}
+			if (!sequence.KeepAliveOnFailure && sequence.State == SequenceState.INTERRUPTED)
+			{
+				CloseSession(session);
+				return;
+			}
+			if (!sequence.KeepAlive && sequence.State == SequenceState.IN_PROCESS)
+			{
+				CloseSession(session);
+			}
+			if (sequence.State == SequenceState.IN_PROCESS)
+			{
+				sequence.State = SequenceState.COMPLETED;
+			}
+			// if there's any need to do more state logic refactor everything to a state machine first
+		}
+
+		private GuiApplication GetEngine()
 		{
 			object engine, sapGuiRot = null;
 			try
@@ -166,48 +221,6 @@ namespace SAPeador
                 }
             }
 			throw new SapSessionException($"User '{user}' has no session with id {sessionId}.");
-		}
-
-        public void PlaySequence(Sequence sequence)
-		{
-			sequence.State = SequenceState.IN_PROCESS;
-			GuiSession session;
-			if (string.IsNullOrWhiteSpace(sequence.SessionId))
-			{
-				session = GetNewSession(sequence.User, sequence.Secret);
-			}
-			else
-			{
-				session = GetSession(sequence.User, sequence.SessionId);
-			}
-			if (session is null)
-			{
-				return;
-			}
-			sequence.SessionId = session.Id;
-			foreach (IExecutable action in sequence.Actions)
-			{
-				action.Execute(session);
-				if ((sequence.InterruptOnFailure || action.GetInterruptOnFailure()) && action.GetState() == InteractionState.FAILURE) 
-				{
-					sequence.State = SequenceState.INTERRUPTED;
-					break;
-				}
-            }
-            if (!sequence.KeepAliveOnFailure && sequence.State == SequenceState.INTERRUPTED)
-            {
-                CloseSession(session);
-				return;
-            }
-            if (!sequence.KeepAlive && sequence.State == SequenceState.IN_PROCESS)
-			{
-                CloseSession(session);
-			}
-            if (sequence.State == SequenceState.IN_PROCESS)
-            {
-                sequence.State = SequenceState.COMPLETED;
-            }
-			// if there's any need to do more state logic refactor everything to a state machine first
 		}
 
         private static void CloseSession(GuiSession session)
