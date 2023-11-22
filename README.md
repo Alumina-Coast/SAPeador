@@ -5,6 +5,13 @@ Ejecución en secuencia de distintos comandos, lecturas y escrituras
 sobre la interfaz gráfica para automatizar exportaciones de 
 resultados de transacciones y otras tareas.
 
+Al utilizar directamente la interfaz cliente de SAP, esta librería está
+pensada para simplificar el uso de la herramienta de scripting para usuarios
+que quieran automatizar tareas repetitivas, o que necesiten integrar el cliente
+de SAP en particular a otras herramientas como PowerBI o Excel. También es
+útil en caso de necesitar desarrollar una aplicación o software que precise la
+integración con SAP y no se disponga de otras librerías a fin como SAP Connector.
+
 ## Uso básico de la librería
 Luego de importar la librería como referencia en su proyecto,
 puede instanciar la clase SapOperator con su string de conexión a SAP:
