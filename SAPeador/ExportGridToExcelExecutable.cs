@@ -4,27 +4,48 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.CSharp;
+using Microsoft.CSharp; // Needed for "dynamic" compatibility, which "AutoItX3.WinList()" returns.
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Contains a base64 string representing a document file, along with its extension for parsing.
+    /// </summary>
     public class DocumentExport
     {
         public string FileExtension { get; set; } = string.Empty;
         public string FileData { get; set; } = string.Empty;
     }
 
+    /// <summary>
+    /// Does the needed operations to export a SAP grid to an Excel file,
+    /// including operating a Save As dialog running on an external process.
+    /// It needs to call AutoIt for this particular behaviour.
+    /// </summary>
     public class ExportGridToExcelExecutable : IExecutable
 	{
 		private static readonly object _lockObject = new object();
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
-        public string ItemPath { get; set; }
+		/// <summary>
+		/// Id for the grid to export.
+		/// </summary>
+		public string ItemPath { get; set; }
+        /// <summary>
+        /// Exported file in base64. Empty if unable to recover a file.
+        /// </summary>
         public DocumentExport ExportedFile { get; private set; } = new DocumentExport();
         private readonly string _fileExtension = "XLSX";
 
-        public ExportGridToExcelExecutable(string itemPath, bool interruptOnFailure = false)
+		/// <summary>
+		/// Does the needed operations to export a SAP grid to an Excel file,
+		/// including operating a Save As dialog running on an external process.
+		/// It needs to call AutoIt for this particular behaviour.
+		/// </summary>
+		/// <param name="itemPath">Id for the grid to export.</param>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+		public ExportGridToExcelExecutable(string itemPath, bool interruptOnFailure = false)
         {
             ItemPath = itemPath;
             this.interruptOnFailure = interruptOnFailure;
@@ -96,6 +117,8 @@ namespace SAPeador
                     var button = (GuiButton)session.FindById("wnd[1]/tbar[0]/btn[0]");
 
                     var cts = new CancellationTokenSource();
+
+                    // Pressing the button here will block the execution, so we run a parallel thread to handle the blocking Save As dialog for us.
                     Task.Run(() => HandleSaveAsWindow(filePath,cts.Token));
 					button.Press();
                     cts.Cancel();
