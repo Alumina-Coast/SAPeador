@@ -4,15 +4,29 @@ using System.Collections.Generic;
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Recovers the data from the children of a SAP container.
+    /// </summary>
     public class GetChildrenExecutable : IExecutable
     {
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
+        /// <summary>
+        /// List with the found <see cref="SapItem"/>s.
+        /// </summary>
         public List<SapItem> Children { get; private set; } = new List<SapItem>();
+        /// <summary>
+        /// Id for the container to read.
+        /// </summary>
         public string ItemPath { get; set; }
         private bool interruptOnFailure;
 
-        public GetChildrenExecutable(string itemPath, bool interruptOnFailure = false)
+		/// <summary>
+		/// Recovers the data from the children of a SAP container.
+		/// </summary>
+		/// <param name="itemPath">Id for the container to read.</param>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+		public GetChildrenExecutable(string itemPath, bool interruptOnFailure = false)
         {
             ItemPath = itemPath;
             this.interruptOnFailure = interruptOnFailure;

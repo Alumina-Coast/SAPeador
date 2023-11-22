@@ -3,15 +3,29 @@ using System;
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Starts a given transaction on the SAP session.
+    /// </summary>
 	public class StartTransactionExecutable : IExecutable
 	{
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
-        public string PreviousText { get; private set; } = string.Empty;
+        /// <summary>
+        /// Saves the previous transaction before executing the new one.
+        /// </summary>
+        public string PreviousTransaction { get; private set; } = string.Empty;
+        /// <summary>
+        /// Code for the transaction to be called.
+        /// </summary>
         public string TransactionCode { get; set; }
 
-        public StartTransactionExecutable(string transactionCode, bool interruptOnFailure = false)
+		/// <summary>
+		/// Starts a given transaction on the SAP session.
+		/// </summary>
+		/// <param name="transactionCode">Code for the transaction to be called.</param>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+		public StartTransactionExecutable(string transactionCode, bool interruptOnFailure = false)
         {
             TransactionCode = transactionCode;
             this.interruptOnFailure = interruptOnFailure;
@@ -57,7 +71,7 @@ namespace SAPeador
             }
             try
             {
-                PreviousText = session.Info.Transaction;
+                PreviousTransaction = session.Info.Transaction;
                 session.StartTransaction(TransactionCode);
                 if (session.Info.Transaction.ToUpper() == TransactionCode.ToUpper())
                 {

@@ -3,13 +3,20 @@ using System;
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Minimizes all windows related to the session.
+    /// </summary>
 	public class HideWindowsExecutable : IExecutable
 	{
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
 
-        public HideWindowsExecutable(bool interruptOnFailure = false)
+		/// <summary>
+		/// Minimizes all windows related to the session.
+		/// </summary>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+		public HideWindowsExecutable(bool interruptOnFailure = false)
         {
             this.interruptOnFailure = interruptOnFailure;
         }
