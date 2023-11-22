@@ -3,16 +3,34 @@ using System;
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Puts a given text in a text field.
+    /// </summary>
 	public class SetTextExecutable : IExecutable
 	{
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
-        private bool interruptOnFailure;
+        /// <summary>
+        /// Previous text in the field.
+        /// </summary>
         public string PreviousText { get; private set; } = string.Empty;
+        /// <summary>
+        /// Id for the target text field.
+        /// </summary>
         public string ItemPath { get; set; }
+        /// <summary>
+        /// Text to write on the text field.
+        /// </summary>
         public string Text { get; set; }
+		private bool interruptOnFailure;
 
-        public SetTextExecutable(string itemPath, string text, bool interruptOnFailure = false)
+		/// <summary>
+		/// Puts a given text in a text field.
+		/// </summary>
+		/// <param name="itemPath">Id for the target text field.</param>
+		/// <param name="text">Text to write on the text field.</param>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+		public SetTextExecutable(string itemPath, string text, bool interruptOnFailure = false)
         {
             ItemPath = itemPath;
             Text = text;

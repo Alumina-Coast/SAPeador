@@ -3,14 +3,29 @@ using System;
 
 namespace SAPeador
 {
+	/// <summary>
+	/// Sends a virtual key to a window in a session.
+	/// </summary>
 	public class SendVKeyExecutable : IExecutable
 	{
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
+		/// <summary>
+		/// Virtual key to be sent.
+		/// </summary>
         public SAPVirtualKey VKey { get; set; }
+		/// <summary>
+		/// Window that the key will be sent to.
+		/// </summary>
         public int WindowNumber { get; set; }
 
+		/// <summary>
+		/// Sends a virtual key to a window in a session.
+		/// </summary>
+		/// <param name="vKey">Virtual key to be sent.</param>
+		/// <param name="windowNumber">Window that the key will be sent to.</param>
+		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
 		public SendVKeyExecutable(SAPVirtualKey vKey, int windowNumber = 0, bool interruptOnFailure = false)
         {
             this.interruptOnFailure = interruptOnFailure;

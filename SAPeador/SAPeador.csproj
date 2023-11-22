@@ -44,9 +44,12 @@
     <Compile Include="HideWindowsExecutable.cs" />
     <Compile Include="IExecutable.cs" />
     <Compile Include="MaximizeWindowsExecutable.cs" />
+    <Compile Include="MaximizeWindowsExecutable.cs" />
     <Compile Include="SapOperator.cs" />
     <Compile Include="SendVKeyExecutable.cs" />
+    <Compile Include="SendVKeyExecutable.cs" />
     <Compile Include="Sequence.cs" />
+    <Compile Include="SetTextExecutable.cs" />
     <Compile Include="SetTextExecutable.cs" />
     <Compile Include="StartTransactionExecutable.cs" />
   </ItemGroup>
