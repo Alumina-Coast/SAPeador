@@ -55,6 +55,8 @@ namespace SAPeador
 		/// Executes the actions from the sequence in the corresponding session and under the flags set in the sequence object.
 		/// </summary>
 		/// <param name="sequence">The sequence to be played on the SAP GUI Client.</param>
+		/// <exception cref="SapSessionException">Thrown when unable to get a new or particular session.</exception>
+		/// <exception cref="SapApplicationException">Thrown when unable to use the SAP GUI Client.</exception>
 		public void PlaySequence(Sequence sequence)
 		{
 			sequence.State = SequenceState.IN_PROCESS;
