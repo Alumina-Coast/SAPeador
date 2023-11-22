@@ -16,6 +16,10 @@ integración con SAP y no se disponga de otras librerías a fin como SAP Connect
 Luego de importar la librería como referencia en su proyecto,
 puede instanciar la clase SapOperator con su string de conexión a SAP:
 ```csharp
+using SAPeador;
+
+// main class declaration and other verbosities
+
 var oper = new SapOperator("/M/example.host.com/S/1111/G/PUBLIC", false);
 ```
 Dicho string variará según su organización. En caso de ser una conexión directa
@@ -46,7 +50,9 @@ ejecutamos la secuencia con el objeto SapOperator y leemos lo resultante:
 ```csharp
 oper.PlaySequence(seq);
 byte[] fileBytes = Convert.FromBase64String(export.ExportedFile.FileData);
-var filePath = System.IO.Path.Combine(Environment.CurrentDirectory, $"EXPORT.{export.ExportedFile.FileExtension}");
+var filePath = System.IO.Path.Combine(
+    Environment.CurrentDirectory,
+    $"EXPORT.{export.ExportedFile.FileExtension}");
 File.WriteAllBytes(filePath, fileBytes);
 ```
 
