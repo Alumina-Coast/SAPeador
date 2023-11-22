@@ -128,6 +128,7 @@ namespace TestApp
 			seq1.Actions.Add(op1a5);
 			oper.PlaySequence(seq1);
 			e.Result = op1a5;
+			GetChildrenExecutable
         }
 	}
 }
