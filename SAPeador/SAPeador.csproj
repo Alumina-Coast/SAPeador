@@ -47,7 +47,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SapOperator.cs" />
     <Compile Include="SendVKeyExecutable.cs" />
-    <Compile Include="SendVKeyExecutable.cs" />
     <Compile Include="Sequence.cs" />
     <Compile Include="SetTextExecutable.cs" />
     <Compile Include="StartTransactionExecutable.cs" />
