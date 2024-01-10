@@ -1,8 +1,10 @@
-﻿using SAPFEWSELib;
+﻿using AutoItX3Lib;
+using SAPFEWSELib;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -89,24 +91,35 @@ namespace SAPeador
                 item.ShowContextMenu();
                 item = null;
                 var usr = (GuiUserArea)session.FindById("wnd[0]/usr");
-                usr.SelectContextMenuItemByText("&006");
+                usr.SelectContextMenuItem("&006");
                 usr = null;
                 var shell = (GuiShell)session.FindById("wnd[1]/usr/cntlOPTION_CONTAINER/shellcont/shell");
-                int maxOptions = 0;
-                try
+                shell.SetFocus();
+                shell = null;
+
+                var autoIt = new AutoItX3();
+                var handleId = string.Empty;
+                while (handleId == string.Empty)
                 {
-                    for (int i = 0; i < 20; i++)
+                    object[,] list = autoIt.WinList("[CLASS:#32770]");
+                    for (int i = 0; i < list.Length / 2; i++)
                     {
-                        shell.SelectContextMenuItemByPosition(i.ToString());
-                        maxOptions = i;
+                        var hwnd = list[1, i];
+                        if (hwnd is null) { continue; }
+                        if (autoIt.ControlShow($"[HANDLE:{hwnd}]", "", "[CLASS:SAPALVGrid; INSTANCE:1]") != 0)
+                        {
+                            handleId = $"[HANDLE:{hwnd}]";
+                            break;
+                        }
                     }
                 }
-                catch { }
-                shell.SelectContextMenuItemByPosition((maxOptions - Condition).ToString());
-                shell = null;
-                var wnd = (GuiFrameWindow)session.FindById("wnd[1]");
-                wnd.Close();
-                wnd = null;
+
+                autoIt.WinActivate(handleId);
+                autoIt.ControlSend(handleId, "", "[ID:1148]", "{DOWN 20}");
+                autoIt.ControlSend(handleId, "", "[ID:1148]", "{UP " + (int)Condition + "}"); 
+                var btn = (GuiButton)session.FindById("wnd[1]/tbar[0]/btn[0]");
+                btn.Press();
+                btn = null;
             }
             catch (Exception e)
             {
