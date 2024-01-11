@@ -114,19 +114,36 @@ namespace TestApp
 		{
 			WorkerParams workerParams = (WorkerParams)e.Argument;
 			SapOperator oper = new SapOperator(workerParams.ConnString, workerParams.UseSso);
-			var op1a1 = new HideWindowsExecutable();
-			var op1a2 = new StartTransactionExecutable("IW28");
-			var op1a3 = new SetTextExecutable("wnd[0]/usr/ctxtINGRP-LOW", "DPA");
-			var op1a4 = new SendVKeyExecutable(SAPVirtualKey.F8);
-			var op1a5 = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell");
-			var seq1 = new Sequence(workerParams.User, workerParams.Password);
-			seq1.Actions.Add(op1a1);
-			seq1.Actions.Add(op1a2);
-			seq1.Actions.Add(op1a3);
-			seq1.Actions.Add(op1a4);
-			seq1.Actions.Add(op1a5);
-			oper.PlaySequence(seq1);
-			e.Result = op1a5;
+			//var op1a1 = new HideWindowsExecutable();
+			//var op1a2 = new StartTransactionExecutable("IW28");
+			//var op1a3 = new SetTextExecutable("wnd[0]/usr/ctxtINGRP-LOW", "DPA");
+			//var op1a4 = new SendVKeyExecutable(SAPVirtualKey.F8);
+			//var op1a5 = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell");
+			//var seq1 = new Sequence(workerParams.User, workerParams.Password);
+			//seq1.Actions.Add(op1a1);
+			//seq1.Actions.Add(op1a2);
+			//seq1.Actions.Add(op1a3);
+			//seq1.Actions.Add(op1a4);
+			//seq1.Actions.Add(op1a5);
+			//oper.PlaySequence(seq1);
+			//e.Result = op1a5;
+
+            var seq = new Sequence(workerParams.User, workerParams.Password)
+            {
+                KeepAlive = true,
+                KeepAliveOnFailure = true,
+                Actions = new List<IExecutable>()
+                {
+                    new StartTransactionExecutable("ZMAN0063"),
+                    new SetTextExecutable("wnd[0]/usr/ctxtSP01-LOW", "FUN"),
+                    new SetTextExecutable("wnd[0]/usr/ctxtSP03-LOW", "0"),
+                    new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
+                    new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
+                    new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
+                    new SetConditionalExecutable("wnd[0]/usr/txt%_SP04_%_APP_%-TEXT", SapConditions.NOT_EQUAL),
+                }
+            };
+            oper.PlaySequence(seq);
         }
 	}
 }

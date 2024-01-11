@@ -115,8 +115,9 @@ namespace SAPeador
                 }
 
                 autoIt.WinActivate(handleId);
-                autoIt.ControlSend(handleId, "", "[ID:1148]", "{DOWN 20}");
-                autoIt.ControlSend(handleId, "", "[ID:1148]", "{UP " + (int)Condition + "}"); 
+                autoIt.ControlFocus(handleId, "", "[ID:1148]");
+                autoIt.ControlSend(handleId, "", "", "{DOWN 20}");
+                autoIt.ControlSend(handleId, "", "", "{UP " + (int)Condition + "}"); 
                 var btn = (GuiButton)session.FindById("wnd[1]/tbar[0]/btn[0]");
                 btn.Press();
                 btn = null;
