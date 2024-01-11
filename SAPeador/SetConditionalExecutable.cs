@@ -93,8 +93,10 @@ namespace SAPeador
                 var usr = (GuiUserArea)session.FindById("wnd[0]/usr");
                 usr.SelectContextMenuItem("&006");
                 usr = null;
-                var shell = (GuiShell)session.FindById("wnd[1]/usr/cntlOPTION_CONTAINER/shellcont/shell");
+                var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
+                var shell = (GuiShell)wnd.FindById("usr/cntlOPTION_CONTAINER/shellcont/shell");
                 shell.SetFocus();
+                wnd = null;
                 shell = null;
 
                 var autoIt = new AutoItX3();
