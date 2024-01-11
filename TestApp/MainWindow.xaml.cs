@@ -128,19 +128,29 @@ namespace TestApp
 			//oper.PlaySequence(seq1);
 			//e.Result = op1a5;
 
-            var seq = new Sequence(workerParams.User, workerParams.Password)
-            {
-                KeepAlive = true,
-                KeepAliveOnFailure = true,
-                Actions = new List<IExecutable>()
-                {
-                    new StartTransactionExecutable("ZMAN0063"),
-                    new SetTextExecutable("wnd[0]/usr/ctxtSP01-LOW", "FUN"),
-                    new SetTextExecutable("wnd[0]/usr/ctxtSP03-LOW", "0"),
-                    new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
-                    new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
-                    new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
-                    new SetConditionalExecutable("wnd[0]/usr/txt%_SP04_%_APP_%-TEXT", SapConditions.NOT_EQUAL),
+			var seq = new Sequence(workerParams.User, workerParams.Password)
+			{
+				KeepAlive = true,
+				KeepAliveOnFailure = true,
+				Actions = new List<IExecutable>()
+				{
+					new StartTransactionExecutable("ZMAN0063"),
+					new SetTextExecutable("wnd[0]/usr/ctxtSP01-LOW", "FUN"),
+					new SetTextExecutable("wnd[0]/usr/ctxtSP03-LOW", "0"),
+					new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
+					new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
+					new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
+					new SetConditionalExecutable("wnd[0]/usr/txt%_SP04_%_APP_%-TEXT", SapConditions.NOT_EQUAL),
+					new SetMultipleValuesExecutable
+					(
+						"wnd[0]/usr/ctxtSP01-LOW", 
+						new List<string>() 
+						{ 
+							"SE1", "SE2",
+						}, 
+						new List<string>(), 
+						new List<string>()
+					),
                 }
             };
             oper.PlaySequence(seq);
