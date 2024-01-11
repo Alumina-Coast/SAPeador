@@ -96,7 +96,6 @@ namespace SAPeador
                 var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
                 var shell = (GuiShell)wnd.FindById("usr/cntlOPTION_CONTAINER/shellcont/shell");
                 shell.SetFocus();
-                wnd = null;
                 shell = null;
 
                 var autoIt = new AutoItX3();
@@ -120,9 +119,10 @@ namespace SAPeador
                 autoIt.ControlFocus(handleId, "", "[ID:1148]");
                 autoIt.ControlSend(handleId, "", "", "{DOWN 20}");
                 autoIt.ControlSend(handleId, "", "", "{UP " + (int)Condition + "}"); 
-                var btn = (GuiButton)session.FindById("wnd[1]/tbar[0]/btn[0]");
+                var btn = (GuiButton)wnd.FindById("tbar[0]/btn[0]");
                 btn.Press();
                 btn = null;
+                wnd = null;
             }
             catch (Exception e)
             {
