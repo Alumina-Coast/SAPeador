@@ -73,7 +73,7 @@ namespace SAPeador
                 SetMessage($"Item with id {ItemPath} could not be read.");
                 return;
             }
-            if (!sapItem.Changeable || !sapItem.Type.Contains("TextField"))
+            if (string.IsNullOrWhiteSpace(sapItem.IconName) || !sapItem.Type.Contains("Button"))
             {
                 SetMessage($"Item with id {ItemPath} and type {sapItem.Type} is not valid for this operation.");
                 return;
@@ -81,9 +81,9 @@ namespace SAPeador
 
             try
             {
-                //var item = (GuiTextField)session.FindById(ItemPath);
-                //PreviousText = item.Text;
-                //item.Text = Text;
+                var btn = (GuiButton)session.FindById(ItemPath);
+                btn.Press();
+                var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
             }
             catch (Exception e)
             {
