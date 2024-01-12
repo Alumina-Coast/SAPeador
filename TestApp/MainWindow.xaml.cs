@@ -128,7 +128,7 @@ namespace TestApp
 					new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
 					new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
 					new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
-					new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.LESS_OR_EQUAL_THAN),
+					//new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.LESS_OR_EQUAL_THAN),
 					new SetMultipleValuesExecutable
 					(
 						"wnd[0]/usr/ctxtSP01-LOW",
@@ -137,19 +137,19 @@ namespace TestApp
 							"SE1", "SE2", "CO2", "CO3", "SAB", "SCD",
 						},
 						new List<string>(){
-                            "MOL", "PAU",
+                            //"MOL", "PAU",
                         },
 						new List<string>(){
-                            "MPR", "VAR",
+                            //"MPR", "VAR",
                         }
                     ),
-     //               new SendVKeyExecutable(SAPVirtualKey.F8),
-     //               export,
-                }
+					new SendVKeyExecutable(SAPVirtualKey.F8),
+					export,
+				}
 			};
 
 			oper.PlaySequence(seq);
-			//e.Result = export;
-        }
+			e.Result = export;
+		}
 	}
 }

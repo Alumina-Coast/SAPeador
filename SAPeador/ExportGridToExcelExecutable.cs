@@ -108,13 +108,16 @@ namespace SAPeador
                 var grid = (GuiGridView)session.FindById(ItemPath);
                 grid.ContextMenu();
                 grid.SelectContextMenuItem("&XXL");
+                grid = null;
+                var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
 
                 var fileName = Guid.NewGuid().ToString();
                 var filePath = Path.Combine(Path.GetTempPath(), $"{fileName}.{_fileExtension}");
 
                 lock (_lockObject)
                 {
-                    var button = (GuiButton)session.FindById("wnd[1]/tbar[0]/btn[0]");
+                    var button = (GuiButton)wnd.FindById("tbar[0]/btn[0]");
+                    wnd = null;
 
                     var cts = new CancellationTokenSource();
 
