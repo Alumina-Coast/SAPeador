@@ -1,4 +1,5 @@
 ﻿using SAPFEWSELib;
+using System;
 
 namespace SAPeador
 {
@@ -9,6 +10,7 @@ namespace SAPeador
 	/// </summary>
 	public class SapItem
     {
+		public string WindowId { get; set; } = string.Empty;
         public string Id { get; set; } = string.Empty;
         public string Type { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
@@ -100,17 +102,36 @@ namespace SAPeador
             SetState(InteractionState.SUCCESS);
 		}
 
-		// TODO: Remove redundant half of itemPath before trying to find it (connection, session, window information, etc.)
 		internal static SapItem Call(GuiSession session, string itemPath)
 		{
 			try
 			{
-				var item = session.FindById(itemPath);
+				var breakpoint = "wnd[";
+				if (itemPath.Contains(breakpoint))
+                {
+                    itemPath = itemPath.Substring(itemPath.LastIndexOf(breakpoint) + breakpoint.Length + 3);
+                }
+				GuiComponent item = null;
+				foreach(GuiFrameWindow wnd in session.Children)
+                {
+					try
+                    {
+                        item = wnd.FindById(itemPath);
+                    }
+					catch { }
+                }
+				string wndId = "wnd[0]";
+                if (item.Id.Contains(breakpoint))
+                {
+                    itemPath = item.Id.Substring(item.Id.LastIndexOf(breakpoint) + breakpoint.Length + 3);
+					wndId = item.Id.Substring(item.Id.LastIndexOf(breakpoint), breakpoint.Length + 2);
+                }
 				var sapItem = new SapItem()
 				{
+					WindowId = wndId,
 					Name = item.Name,
 					Type = item.Type,
-					Id = item.Id,
+					Id = itemPath,
 					IsContainer = item.ContainerType,
 				};
 				try

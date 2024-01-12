@@ -112,6 +112,7 @@ namespace SAPeador
                 usr = null;
                 var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
                 var shell = (GuiShell)wnd.FindById("usr/cntlOPTION_CONTAINER/shellcont/shell");
+                var hold = shell.Id;
                 shell.SetFocus();
                 shell = null;
 

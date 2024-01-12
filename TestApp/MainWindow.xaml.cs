@@ -116,6 +116,7 @@ namespace TestApp
 			SapOperator oper = new SapOperator(workerParams.ConnString, workerParams.UseSso);
 
 			var export = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell/shellcont[1]/shell");
+            var child = new GetChildrenExecutable("wnd[0]/usr");
             var seq = new Sequence(workerParams.User, workerParams.Password)
 			{
 				KeepAlive = true,
@@ -128,7 +129,8 @@ namespace TestApp
 					new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
 					new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
 					new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
-					//new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.LESS_OR_EQUAL_THAN),
+					child,
+					new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.LESS_OR_EQUAL_THAN),
 					new SetMultipleValuesExecutable
 					(
 						"wnd[0]/usr/ctxtSP01-LOW",
@@ -143,8 +145,8 @@ namespace TestApp
                             //"MPR", "VAR",
                         }
                     ),
-					new SendVKeyExecutable(SAPVirtualKey.F8),
-					export,
+					//new SendVKeyExecutable(SAPVirtualKey.F8),
+					//export,
 				}
 			};
 
