@@ -118,6 +118,7 @@ namespace TestApp
 			var export = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell/shellcont[1]/shell");
             var seq = new Sequence(workerParams.User, workerParams.Password)
 			{
+				KeepAlive = true,
 				KeepAliveOnFailure = true,
 				Actions = new List<IExecutable>()
 				{
@@ -127,24 +128,28 @@ namespace TestApp
 					new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
 					new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
 					new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
-					new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.NOT_EQUAL),
+					new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.LESS_OR_EQUAL_THAN),
 					new SetMultipleValuesExecutable
 					(
 						"wnd[0]/usr/ctxtSP01-LOW",
 						new List<string>()
 						{
-							"SE1", "SE2", "MOL", "MPR", "PAU", "VAR", "CO2", "CO3", "SAB", "SCD",
+							"SE1", "SE2", "CO2", "CO3", "SAB", "SCD",
 						},
-						new List<string>(),
-						new List<string>()
-					),
-                    new SendVKeyExecutable(SAPVirtualKey.F8),
-                    export,
+						new List<string>(){
+                            "MOL", "PAU",
+                        },
+						new List<string>(){
+                            "MPR", "VAR",
+                        }
+                    ),
+     //               new SendVKeyExecutable(SAPVirtualKey.F8),
+     //               export,
                 }
 			};
 
 			oper.PlaySequence(seq);
-			e.Result = export;
+			//e.Result = export;
         }
 	}
 }

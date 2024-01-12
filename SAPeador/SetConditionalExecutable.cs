@@ -84,6 +84,7 @@ namespace SAPeador
 
         // We are using AutoIt in this because I couldn't find a nice way of selecting the conditon.
         // The container for the conditions is a custom one, so it does not have row selection methods.
+        // TODO: Add verification that the right condition was set or fail. (check if possible)
         void IExecutable.Execute(GuiSession session)
         {
             SetState(InteractionState.FAILURE);

@@ -100,6 +100,7 @@ namespace SAPeador
             SetState(InteractionState.SUCCESS);
 		}
 
+		// TODO: Remove redundant half of itemPath before trying to find it (connection, session, window information, etc.)
 		internal static SapItem Call(GuiSession session, string itemPath)
 		{
 			try
