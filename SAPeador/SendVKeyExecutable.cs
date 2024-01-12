@@ -16,21 +16,21 @@ namespace SAPeador
 		/// </summary>
         public SAPVirtualKey VKey { get; set; }
 		/// <summary>
-		/// Window that the key will be sent to.
+		/// Item id where the key will be sent to. Must be a window type.
 		/// </summary>
-        public int WindowNumber { get; set; }
+        public string ItemPath { get; set; }
 
-		/// <summary>
-		/// Sends a virtual key to a window in a session.
-		/// </summary>
-		/// <param name="vKey">Virtual key to be sent.</param>
-		/// <param name="windowNumber">Window that the key will be sent to.</param>
-		/// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
-		public SendVKeyExecutable(SAPVirtualKey vKey, int windowNumber = 0, bool interruptOnFailure = false)
+        /// <summary>
+        /// Sends a virtual key to a window in a session.
+        /// </summary>
+        /// <param name="vKey">Virtual key to be sent.</param>
+        /// <param name="itemPath">Item id where the key will be sent to. Must be a window type. Set to main window by default.</param>
+        /// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+        public SendVKeyExecutable(SAPVirtualKey vKey, string itemPath = "wnd[0]", bool interruptOnFailure = false)
         {
             this.interruptOnFailure = interruptOnFailure;
             VKey = vKey;
-            WindowNumber = windowNumber;
+            ItemPath = itemPath;
         }
 
         public InteractionState GetState()
@@ -67,17 +67,36 @@ namespace SAPeador
         {
             SetState(InteractionState.FAILURE);
 
+            if (string.IsNullOrWhiteSpace(ItemPath))
+            {
+                SetMessage($"No item path given.");
+                return;
+            }
+
+            SapItem sapItem = GetSapItemExecutable.Call(session, ItemPath);
+            if (sapItem is null)
+            {
+                SetMessage($"Item with id {ItemPath} could not be read.");
+                return;
+            }
+            if (!sapItem.Type.ToUpper().Contains("WINDOW"))
+            {
+                SetMessage($"Item with id {ItemPath} and type {sapItem.Type} is not valid for this operation.");
+                return;
+            }
+
             try
             {
-                GuiFrameWindow frame = (GuiFrameWindow)session.FindById($"wnd[{WindowNumber}]");
+                GuiFrameWindow frame = (GuiFrameWindow)session.FindById(ItemPath);
                 frame.SendVKey((int)VKey);
             }
             catch (Exception e)
             {
-                SetMessage($"Failed to send vkey {VKey} to windows with number {WindowNumber}. Error: {e.Message}");
+                SetMessage($"Failed to send vkey {VKey} to item with id {ItemPath}. Error: {e.Message}");
                 return;
             }
-            SetMessage($"VKey {VKey} sent to windows with number {WindowNumber}.");
+
+            SetMessage($"VKey {VKey} sent to item with id {ItemPath}.");
             SetState(InteractionState.SUCCESS);
 		}
 	}
