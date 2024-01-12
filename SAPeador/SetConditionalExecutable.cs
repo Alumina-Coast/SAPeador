@@ -91,7 +91,7 @@ namespace SAPeador
                 item.ShowContextMenu();
                 item = null;
                 var usr = (GuiUserArea)session.FindById("wnd[0]/usr");
-                usr.SelectContextMenuItem("&006");
+                usr.SelectContextMenuItemByPosition("0");
                 usr = null;
                 var wnd = (GuiFrameWindow)session.Children.ElementAt(session.Children.Count - 1);
                 var shell = (GuiShell)wnd.FindById("usr/cntlOPTION_CONTAINER/shellcont/shell");

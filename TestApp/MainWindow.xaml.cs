@@ -114,23 +114,10 @@ namespace TestApp
 		{
 			WorkerParams workerParams = (WorkerParams)e.Argument;
 			SapOperator oper = new SapOperator(workerParams.ConnString, workerParams.UseSso);
-			//var op1a1 = new HideWindowsExecutable();
-			//var op1a2 = new StartTransactionExecutable("IW28");
-			//var op1a3 = new SetTextExecutable("wnd[0]/usr/ctxtINGRP-LOW", "DPA");
-			//var op1a4 = new SendVKeyExecutable(SAPVirtualKey.F8);
-			//var op1a5 = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell");
-			//var seq1 = new Sequence(workerParams.User, workerParams.Password);
-			//seq1.Actions.Add(op1a1);
-			//seq1.Actions.Add(op1a2);
-			//seq1.Actions.Add(op1a3);
-			//seq1.Actions.Add(op1a4);
-			//seq1.Actions.Add(op1a5);
-			//oper.PlaySequence(seq1);
-			//e.Result = op1a5;
 
-			var seq = new Sequence(workerParams.User, workerParams.Password)
+			var export = new ExportGridToExcelExecutable("wnd[0]/usr/cntlGRID1/shellcont/shell/shellcont[1]/shell");
+            var seq = new Sequence(workerParams.User, workerParams.Password)
 			{
-				KeepAlive = true,
 				KeepAliveOnFailure = true,
 				Actions = new List<IExecutable>()
 				{
@@ -151,9 +138,13 @@ namespace TestApp
 						new List<string>(),
 						new List<string>()
 					),
-				}
+                    new SendVKeyExecutable(SAPVirtualKey.F8),
+                    export,
+                }
 			};
-            oper.PlaySequence(seq);
+
+			oper.PlaySequence(seq);
+			e.Result = export;
         }
 	}
 }
