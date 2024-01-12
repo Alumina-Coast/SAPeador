@@ -22,20 +22,34 @@ namespace SAPeador
         NOT_EQUAL = 0,
     }
 
+    /// <summary>
+    /// Sets a condition (NOT_EQUAL, LESS_THAN, and such) on a field.
+    /// </summary>
     public class SetConditionalExecutable : IExecutable
     {
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
+        /// <summary>
+        /// Condition to be set, must be one of SapCondition.
+        /// </summary>
         public SapConditions Condition { get; set; }
+        /// <summary>
+        /// Id for the target field.
+        /// </summary>
         public string ItemPath { get; set; }
-        public bool ExcludeSelection { get; set; }
 
-        public SetConditionalExecutable(string itemPath, SapConditions condition, bool excludeSelection = false)
+        /// <summary>
+        /// Sets a condition (NOT_EQUAL, LESS_THAN, and such) on a field.
+        /// </summary>
+        /// <param name="itemPath">Id for the target field.</param>
+        /// <param name="condition">Condition to be set, must be one of SapCondition.</param>
+        /// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+        public SetConditionalExecutable(string itemPath, SapConditions condition, bool interruptOnFailure = false)
         {
             ItemPath = itemPath;
             Condition = condition;
-            ExcludeSelection = excludeSelection;
+            this.interruptOnFailure = interruptOnFailure;
         }
 
         public InteractionState GetState()
@@ -68,6 +82,8 @@ namespace SAPeador
             interruptOnFailure = value;
         }
 
+        // We are using AutoIt in this because I couldn't find a nice way of selecting the conditon.
+        // The container for the conditions is a custom one, so it does not have row selection methods.
         void IExecutable.Execute(GuiSession session)
         {
             SetState(InteractionState.FAILURE);

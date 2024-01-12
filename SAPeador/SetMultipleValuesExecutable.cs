@@ -12,24 +12,52 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace SAPeador
 {
+    /// <summary>
+    /// Sets multiple values and intervals in complex parameters.
+    /// </summary>
     public class SetMultipleValuesExecutable : IExecutable
     {
         private InteractionState state = InteractionState.NOT_EXECUTED;
         private string message = string.Empty;
         private bool interruptOnFailure;
+        /// <summary>
+        /// List of values to set.
+        /// </summary>
         public List<string> SingleValues { get; set; }
+        /// <summary>
+        /// List of values to set, low end of intervals.
+        /// </summary>
         public List<string> LowValues { get; set; }
+        /// <summary>
+        /// List of values to set, high end of intervals. Must be the same size of LowValues.
+        /// </summary>
         public List<string> HighValues { get; set; }
+        /// <summary>
+        /// If set to false, will clear all existing values before writting the new ones.
+        /// </summary>
         public bool Additive { get; set; }
+        /// <summary>
+        /// Id for the target field.
+        /// </summary>
         public string ItemPath { get; set; }
 
-        public SetMultipleValuesExecutable(string itemPath, List<string> singleValues, List<string> lowValues, List<string> highValues, bool additive = true)
+        /// <summary>
+        /// Sets multiple values and intervals in complex parameters.
+        /// </summary>
+        /// <param name="itemPath">Id for the target field.</param>
+        /// <param name="singleValues">List of values to set.</param>
+        /// <param name="lowValues">List of values to set, low end of intervals.</param>
+        /// <param name="highValues">List of values to set, high end of intervals.</param>
+        /// <param name="additive">If set to false, will clear all existing values before writting the new ones. True by default.</param>
+        /// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
+        public SetMultipleValuesExecutable(string itemPath, List<string> singleValues, List<string> lowValues, List<string> highValues, bool additive = true, bool interruptOnFailure = false)
         {
             ItemPath = itemPath;
             SingleValues = singleValues;
             LowValues = lowValues;
             HighValues = highValues;
             Additive = additive;
+            this.interruptOnFailure = interruptOnFailure;
         }
 
         public InteractionState GetState()
@@ -158,11 +186,11 @@ namespace SAPeador
             }
             catch (Exception e)
             {
-                SetMessage($"Failed to read {ItemPath}. Error: {e.Message}");
+                SetMessage($"Failed to set multiple values at item with id {ItemPath}. Error: {e.Message}");
                 return;
             }
 
-            SetMessage($"Value  written on item with id {ItemPath}.");
+            SetMessage($"Multiple values written on item with id {ItemPath}.");
             SetState(InteractionState.SUCCESS);
         }
     }
