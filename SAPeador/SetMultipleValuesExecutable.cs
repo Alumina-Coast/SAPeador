@@ -92,7 +92,10 @@ namespace SAPeador
 
                 var table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpSIVA/ssubSCREEN_HEADER:SAPLALDB:3010/tblSAPLALDBSINGLE");
 
-                //if !additive clear table
+                if (!Additive)
+                {
+                    wnd.SendVKey((int)SAPVirtualKey.SHIFT_F4);
+                }
 
                 int rowCount = 0;
 
@@ -100,30 +103,58 @@ namespace SAPeador
                 GuiTextField target;
                 foreach(var single in SingleValues)
                 {
-                    row = table.GetAbsoluteRow(rowCount++);
-                    target = (GuiTextField)row.ElementAt(1);
-                    target.Text = single;
+                    while (true)
+                    {
+                        row = table.GetAbsoluteRow(rowCount++);
+                        target = (GuiTextField)row.ElementAt(1);
+                        if (string.IsNullOrWhiteSpace(target.Text))
+                        {
+                            target.Text = single;
+                            break;
+                        }
+                        table.VerticalScrollbar.Position++;
+                        table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpSIVA/ssubSCREEN_HEADER:SAPLALDB:3010/tblSAPLALDBSINGLE");
+                    }
                     table.VerticalScrollbar.Position++;
                     table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpSIVA/ssubSCREEN_HEADER:SAPLALDB:3010/tblSAPLALDBSINGLE");
                 }
+                target = null;
 
                 var tab = (GuiTab)wnd.FindById("usr/tabsTAB_STRIP/tabpINTL");
                 tab.Select();
+                tab = null;
                 table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpINTL/ssubSCREEN_HEADER:SAPLALDB:3020/tblSAPLALDBINTERVAL");
 
                 rowCount = 0;
+                GuiTextField targetLow;
+                GuiTextField targetHigh;
                 foreach (var low in LowValues)
                 {
-                    row = table.GetAbsoluteRow(rowCount++);
-                    target = (GuiTextField)row.ElementAt(1);
-                    target.Text = low;
-                    target = (GuiTextField)row.ElementAt(2);
-                    target.Text = HighValues.ElementAt(LowValues.IndexOf(low));
+                    while (true)
+                    {
+                        row = table.GetAbsoluteRow(rowCount++);
+                        targetLow = (GuiTextField)row.ElementAt(1);
+                        targetHigh = (GuiTextField)row.ElementAt(2);
+                        if (string.IsNullOrWhiteSpace(targetLow.Text) && string.IsNullOrWhiteSpace(targetHigh.Text))
+                        {
+                            targetLow.Text = low;
+                            targetHigh.Text = HighValues.ElementAt(LowValues.IndexOf(low));
+                            break;
+                        }
+                        table.VerticalScrollbar.Position++;
+                        table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpINTL/ssubSCREEN_HEADER:SAPLALDB:3020/tblSAPLALDBINTERVAL");
+                    }
                     table.VerticalScrollbar.Position++;
                     table = (GuiTableControl)wnd.FindById("usr/tabsTAB_STRIP/tabpINTL/ssubSCREEN_HEADER:SAPLALDB:3020/tblSAPLALDBINTERVAL");
                 }
+                targetLow = null;
+                targetHigh = null;
+
+                row = null;
+                table = null;
 
                 wnd.SendVKey((int)SAPVirtualKey.F8);
+                wnd = null;
             }
             catch (Exception e)
             {

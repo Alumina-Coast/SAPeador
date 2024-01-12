@@ -140,19 +140,19 @@ namespace TestApp
 					new SetTextExecutable("wnd[0]/usr/ctxtSP03-HIGH", "2"),
 					new SetTextExecutable("wnd[0]/usr/ctxtSP04-LOW", "ZP*"),
 					new SetTextExecutable("wnd[0]/usr/ctxtP_VAR", "/ALOTO"),
-					new SetConditionalExecutable("wnd[0]/usr/txt%_SP04_%_APP_%-TEXT", SapConditions.NOT_EQUAL),
+					new SetConditionalExecutable("wnd[0]/usr/ctxtSP02-LOW", SapConditions.NOT_EQUAL),
 					new SetMultipleValuesExecutable
 					(
-						"wnd[0]/usr/ctxtSP01-LOW", 
-						new List<string>() 
-						{ 
-							"SE1", "SE2",
-						}, 
-						new List<string>(), 
+						"wnd[0]/usr/ctxtSP01-LOW",
+						new List<string>()
+						{
+							"SE1", "SE2", "MOL", "MPR", "PAU", "VAR", "CO2", "CO3", "SAB", "SCD",
+						},
+						new List<string>(),
 						new List<string>()
 					),
-                }
-            };
+				}
+			};
             oper.PlaySequence(seq);
         }
 	}
