@@ -107,7 +107,11 @@ namespace SAPeador
 			try
 			{
 				var breakpoint = "wnd[";
-				if (itemPath.Contains(breakpoint))
+                if (itemPath.Length < itemPath.LastIndexOf(breakpoint) + breakpoint.Length + 3)
+                {
+                    itemPath = itemPath.Substring(Math.Max(itemPath.LastIndexOf(breakpoint),0));
+                } 
+				else if (itemPath.Contains(breakpoint))
                 {
                     itemPath = itemPath.Substring(itemPath.LastIndexOf(breakpoint) + breakpoint.Length + 3);
                 }
@@ -120,8 +124,20 @@ namespace SAPeador
                     }
 					catch { }
                 }
-				string wndId = "wnd[0]";
-                if (item.Id.Contains(breakpoint))
+				if (item is null)
+                {
+                    try
+                    {
+                        item = session.FindById(itemPath);
+                    }
+                    catch { }
+                }
+				string wndId = string.Empty;
+                if (itemPath.Length < itemPath.LastIndexOf(breakpoint) + breakpoint.Length + 3)
+                {
+                    itemPath = itemPath.Substring(Math.Max(itemPath.LastIndexOf(breakpoint),0));
+                }
+                else if (item.Id.Contains(breakpoint))
                 {
                     itemPath = item.Id.Substring(item.Id.LastIndexOf(breakpoint) + breakpoint.Length + 3);
 					wndId = item.Id.Substring(item.Id.LastIndexOf(breakpoint), breakpoint.Length + 2);
