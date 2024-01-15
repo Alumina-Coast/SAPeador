@@ -77,7 +77,7 @@ namespace SAPeador
                 return;
             }
 
-            var sapItem = GetSapItemExecutable.Call(session, ItemPath);
+            var sapItem = SapItem.Get(session, ItemPath);
 			if (sapItem is null) 
 			{
                 SetMessage($"Item with id {ItemPath} could not be read.");

@@ -72,7 +72,7 @@ namespace SAPeador
                 return;
             }
 
-            SapItem sapItem = GetSapItemExecutable.Call(session, ItemPath);
+            var sapItem = SapItem.Get(session, ItemPath);
             if (sapItem is null)
             {
                 SetMessage($"Item with id {ItemPath} could not be read.");
@@ -109,7 +109,7 @@ namespace SAPeador
 
             foreach (string childId in rootChildrenIds)
             {
-                SapItem child = GetSapItemExecutable.Call(session,childId);
+                var child = SapItem.Get(session,childId);
                 if (child != null)
                 {
                     Children.Add(child);
