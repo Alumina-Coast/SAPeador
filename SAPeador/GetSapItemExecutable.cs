@@ -21,6 +21,25 @@ namespace SAPeador
         public string IconName { get; set; } = string.Empty;
         public bool Changeable { get; set; } = false;
         public bool IsContainer { get; set; } = false;
+
+        public T GetComponent<T>(GuiSession session)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(WindowId))
+                {
+                    return (T)session.FindById(Id);
+                }
+                else
+                {
+                    return (T)((GuiFrameWindow)session.FindById(WindowId)).FindById(Id);
+                }
+            }
+            catch
+            {
+                return default;
+            }
+        }
     }
 
 	/// <summary>
@@ -168,24 +187,5 @@ namespace SAPeador
 				return null;
 			}
 		}
-
-        internal static T GetComponent<T>(GuiSession session, SapItem item)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(item.WindowId))
-                {
-                    return (T)session.FindById(item.Id);
-                }
-                else
-                {
-                    return (T)((GuiFrameWindow)session.FindById(item.WindowId)).FindById(item.Id);
-                }
-            }
-            catch
-            {
-                return default;
-            }
-        }
 	}
 }
