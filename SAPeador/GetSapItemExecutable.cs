@@ -1,5 +1,6 @@
 ﻿using SAPFEWSELib;
 using System;
+using static System.Collections.Specialized.BitVector32;
 
 namespace SAPeador
 {
@@ -167,5 +168,24 @@ namespace SAPeador
 				return null;
 			}
 		}
+
+        internal static T GetComponent<T>(GuiSession session, SapItem item)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(item.WindowId))
+                {
+                    return (T)((GuiFrameWindow)session.FindById(item.WindowId)).FindById(item.Id);
+                }
+                else
+                {
+                    return (T)session.FindById(item.Id);
+                }
+            }
+            catch
+            {
+                return default;
+            }
+        }
 	}
 }
