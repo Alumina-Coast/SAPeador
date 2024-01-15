@@ -87,7 +87,7 @@ namespace SAPeador
 
             try
             {
-                GuiFrameWindow frame = (GuiFrameWindow)session.FindById(ItemPath);
+                GuiFrameWindow frame = sapItem.GetComponent<GuiFrameWindow>(session);
                 frame.SendVKey((int)VKey);
             }
             catch (Exception e)

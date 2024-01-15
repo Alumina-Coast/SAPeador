@@ -90,11 +90,11 @@ namespace SAPeador
                 GuiComponentCollection rootChildren;
                 try
                 {
-                    rootChildren = ((GuiVContainer)session.FindById(ItemPath)).Children;
+                    rootChildren = sapItem.GetComponent<GuiVContainer>(session).Children;
                 }
                 catch
                 {
-                    rootChildren = ((GuiContainer)session.FindById(ItemPath)).Children;
+                    rootChildren = sapItem.GetComponent<GuiContainer>(session).Children;
                 }
                 foreach (GuiComponent child in rootChildren)
                 {

@@ -110,7 +110,7 @@ namespace SAPeador
 
             try
             {
-                var component = (GuiVComponent)session.FindById(ItemPath);
+                var component = sapItem.GetComponent<GuiVComponent>(session);
                 component.ShowContextMenu();
                 component = null;
                 var usr = (GuiUserArea)session.FindById("wnd[0]/usr");

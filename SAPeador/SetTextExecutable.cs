@@ -91,7 +91,7 @@ namespace SAPeador
 
 			try
             {
-                var item = (GuiTextField)session.FindById(ItemPath);
+                var item = sapItem.GetComponent<GuiTextField>(session);
                 PreviousText = item.Text;
                 item.Text = Text;
             }

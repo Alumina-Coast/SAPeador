@@ -105,7 +105,7 @@ namespace SAPeador
 
             try
             {
-                var grid = GetSapItemExecutable.GetComponent<GuiGridView>(session,sapItem);
+                var grid = sapItem.GetComponent<GuiGridView>(session);
                 grid.ContextMenu();
                 grid.SelectContextMenuItem("&XXL");
                 grid = null;
