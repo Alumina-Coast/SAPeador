@@ -145,8 +145,8 @@ namespace TestApp
                             //"MPR", "VAR",
                         }
                     ),
-					//new SendVKeyExecutable(SAPVirtualKey.F8),
-					//export,
+					new SendVKeyExecutable(SAPVirtualKey.F8),
+					export,
 				}
 			};
 

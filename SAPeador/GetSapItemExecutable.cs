@@ -175,11 +175,11 @@ namespace SAPeador
             {
                 if (string.IsNullOrWhiteSpace(item.WindowId))
                 {
-                    return (T)((GuiFrameWindow)session.FindById(item.WindowId)).FindById(item.Id);
+                    return (T)session.FindById(item.Id);
                 }
                 else
                 {
-                    return (T)session.FindById(item.Id);
+                    return (T)((GuiFrameWindow)session.FindById(item.WindowId)).FindById(item.Id);
                 }
             }
             catch
