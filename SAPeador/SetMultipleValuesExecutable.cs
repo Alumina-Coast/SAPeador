@@ -52,6 +52,7 @@ namespace SAPeador
         /// <param name="interruptOnFailure">Whether this particular action stops sequence execution on failure. False by default.</param>
         public SetMultipleValuesExecutable(string itemPath, List<string> singleValues, List<string> lowValues, List<string> highValues, bool additive = true, bool interruptOnFailure = false)
         {
+            // TODO: Make lows and highs optional, ensure they both have the same lenght
             ItemPath = itemPath;
             SingleValues = singleValues;
             LowValues = lowValues;
