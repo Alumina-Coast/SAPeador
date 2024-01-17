@@ -4,7 +4,8 @@
     <id>SAPeador</id>
     <version>1.0.0.1</version>
     <title>SAPeador</title>
-    <authors>Alumina Coast</authors>
+	<owners>Alumina Coast</owners>
+    <authors>Alexis Barrientos Rivas</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>
     <!-- <icon>icon.png</icon> -->
