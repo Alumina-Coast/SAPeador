@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>SAPeador</id>
+    <version>1.0.0.1</version>
+    <title>SAPeador</title>
+    <authors>Alumina Coast</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <!-- <icon>icon.png</icon> -->
+    <projectUrl>https://github.com/Alumina-Coast/SAPeador</projectUrl>
+    <description>Librearía de manejo de cliente SAP GUI por scripting.</description>
+    <releaseNotes>Primera versión publicada de la librería.</releaseNotes>
+    <copyright>Copyright (c) 2023 Alumina Coast</copyright>
+    <tags></tags>
+	<dependencies>
+	  <group targetFramework=".NETFramework4.8" />
+	</dependencies>
+    <readme>README.md</readme>
+  </metadata>
+  <files>
+    <file src="bin\Release\SAPeador.dll" target="lib\net48\SAPeador.dll" />
+    <file src="bin\Release\SAPeador.dll.config" target="lib\net48\SAPeador.dll.config" />
+    <file src="bin\Release\SAPeador.pdb" target="lib\net48\SAPeador.pdb" />
+    <file src="..\.env.example" target=".env" />
+    <file src="..\LICENSE" target="LICENSE"/>
+    <file src="..\README.md" target="README.md"/>
+  </files>
+</package>
