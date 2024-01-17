@@ -26,9 +26,9 @@ namespace SAPeador
         public bool IsContainer { get; set; } = false;
 
         /// <summary>
-        /// Retrieves the actual COM component from an active session, casting it to T of type GuiComponent.
+        /// Retrieves the actual COM component from an active session, casting it to a given type.
         /// </summary>
-        /// <typeparam name="T">Class name that the component will be cast to. Must be a GuiComponent type.</typeparam>
+        /// <typeparam name="T">Class name that the component will be cast to. Must be a SAP compatibly type.</typeparam>
         /// <param name="session">Current active session from where to grab said component.</param>
         /// <returns>Returns the found component or null if unable to cast or find.</returns>
         public T GetComponent<T>(GuiSession session)
