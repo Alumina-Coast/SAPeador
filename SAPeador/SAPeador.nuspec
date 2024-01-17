@@ -23,7 +23,6 @@
     <file src="bin\Release\SAPeador.dll" target="lib\net48\SAPeador.dll" />
     <file src="bin\Release\SAPeador.dll.config" target="lib\net48\SAPeador.dll.config" />
     <file src="bin\Release\SAPeador.pdb" target="lib\net48\SAPeador.pdb" />
-    <file src="..\.env.example" target=".env" />
     <file src="..\LICENSE" target="LICENSE"/>
     <file src="..\README.md" target="README.md"/>
   </files>
