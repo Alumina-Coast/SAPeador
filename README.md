@@ -68,6 +68,6 @@ primera ejecución), lo que le dará los objetos más superiores en el árbol de
 La librería requiere los siguientes programas instalados:
 - .NET Framework 4.8 (Runtime)
 - SAP GUI Client (Probado con SAP Logon 750)
-- AutoIt (Requerido para la exportación de tablas SAP a Excel)
+- AutoIt (Requerido para algunas acciones, en especial para la exportación de tablas)
 
 Se recomienda utilizar la misma arquitectura entre todos los programas (32bits o 64bits).
