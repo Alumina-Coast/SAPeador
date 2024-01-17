@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SAPeador
 {
     /// <summary>
-    /// Contains all the fields you would encounter in a SAP component class.
+    /// Basic component data class. Contains all the fields you would encounter in a SAP component class.
     /// It helps identify what kind of component are you dealing with before directly interacting with it.
     /// The Id field is particularly useful since it's what most <see cref="IExecutable"/>s will be using to identify components.
     /// </summary>
@@ -25,6 +25,12 @@ namespace SAPeador
         public bool Changeable { get; set; } = false;
         public bool IsContainer { get; set; } = false;
 
+        /// <summary>
+        /// Retrieves the actual COM component from an active session, casting it to T of type GuiComponent.
+        /// </summary>
+        /// <typeparam name="T">Class name that the component will be cast to. Must be a GuiComponent type.</typeparam>
+        /// <param name="session">Current active session from where to grab said component.</param>
+        /// <returns>Returns the found component or null if unable to cast or find.</returns>
         public T GetComponent<T>(GuiSession session)
         {
             try
@@ -44,6 +50,12 @@ namespace SAPeador
             }
         }
 
+        /// <summary>
+        /// Constructs a SapItem by finding the corresponding component in the session by its Id.
+        /// </summary>
+        /// <param name="session">Current active session from where to find said component.</param>
+        /// <param name="itemPath">Id for the item to find and read.</param>
+        /// <returns>Returns a new SapItem with the gathered data, or null if it was unable to find or read.</returns>
         public static SapItem Get(GuiSession session, string itemPath)
         {
             try
