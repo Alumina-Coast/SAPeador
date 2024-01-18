@@ -168,10 +168,12 @@ namespace SAPeador
             }
             autoIt.WinActivate(handleId);
             await Task.Delay(100);
-            while (autoIt.ControlSetText(handleId, "", "[ID:1148]", filePath) == 0 && !cancellationToken.IsCancellationRequested)
+            while (autoIt.ControlGetText(handleId, "", "[ID:1148]").Trim().ToUpper() != filePath.Trim().ToUpper() && !cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(100, cancellationToken);
+                autoIt.ControlSetText(handleId, "", "[ID:1148]", filePath);
             }
+            await Task.Delay(100, cancellationToken);
             while (autoIt.ControlClick(handleId, "", "[CLASS:Button; INSTANCE:2]") == 0 && !cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(100, cancellationToken);
