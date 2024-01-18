@@ -181,10 +181,26 @@ namespace SAPeador
             {
                 await Task.Delay(100, cancellationToken);
             }
-            var hwndConfirm = autoIt.WinGetHandle("[CLASS:#32770]");
-            autoIt.WinActivate($"[HANDLE:{hwndConfirm}]");
+            var hwndHandle = string.Empty;
+            while (hwndHandle == string.Empty && !cancellationToken.IsCancellationRequested)
+            {
+                object[,] list = autoIt.WinList("[CLASS:#32770]");
+                for (int i = 0; i < list.Length / 2; i++)
+                {
+                    var hwnd = list[1, i];
+                    if (hwnd is null) { continue; }
+                    if (autoIt.ControlShow($"[HANDLE:{hwnd}]", "", "[CLASS:DirectUIHWND; INSTANCE:1]") != 0 &&
+                        autoIt.ControlShow($"[HANDLE:{hwnd}]", "", "[CLASS:Button; INSTANCE:1]") != 0 &&
+                        autoIt.ControlShow($"[HANDLE:{hwnd}]", "", "[CLASS:Button; INSTANCE:2]") != 0)
+                    {
+                        hwndHandle = $"[HANDLE:{hwnd}]";
+                        break;
+                    }
+                }
+            }
+            autoIt.WinActivate(hwndHandle);
             await Task.Delay(100);
-            while (autoIt.ControlClick($"[HANDLE:{hwndConfirm}]", "", "[CLASS:Button; INSTANCE:1]") == 0 && !cancellationToken.IsCancellationRequested)
+            while (autoIt.ControlClick(hwndHandle, "", "[CLASS:Button; INSTANCE:1]") == 0 && !cancellationToken.IsCancellationRequested)
             {
                 await Task.Delay(100, cancellationToken);
             }
